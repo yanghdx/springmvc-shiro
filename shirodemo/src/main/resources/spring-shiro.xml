@@ -105,7 +105,7 @@
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login"/>
         <property name="successUrl" value="/index"/>
-        <property name="unauthorizedUrl" valu="/unauthroized"/>
+        <property name="unauthorizedUrl" value="/unauthroized"/>
         <property name="filters">
             <util:map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>

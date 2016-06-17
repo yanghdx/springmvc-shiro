@@ -30,11 +30,11 @@
        class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
  		<property name="messageConverters">
- 		  <list>
-  			 <ref bean="jsonHttpMessageConverter"/>
-   		</list>
-    </property>
-
+ 		  	<list>
+  				<ref bean="jsonHttpMessageConverter"/>
+   			</list>
+    	</property>
+	</bean>
 
     <!-- 当在web.xml 中   DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
     <mvc:default-servlet-handler/>
@@ -44,13 +44,18 @@
 
 
     <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
-    <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-          p:order="1">
-        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="contentType" value="text/html"/>
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+    <bean id="multipartResolver"     
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+          <property name="defaultEncoding" value="utf-8"/>
+          <!-- 20M -->
+          <property name="maxUploadSize" value="20480000"/>
+    </bean>     
 
     <!-- 控制器异常处理 -->
     <bean id="exceptionHandlerExceptionResolver" 
@@ -60,6 +65,6 @@
     <bean class="cn.doit123.shirodemo.core.handlers.AuthExceptionHandler"/>
 
     <import resource="spring-mvc-shiro.xml"/>
-    <import resource="spring-mvc-remote-service.xml"/>
+    <!--  <import resource="spring-mvc-remote-service.xml"/> -->
 
 </beans>
