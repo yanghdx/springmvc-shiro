@@ -18,9 +18,10 @@ public class AuthExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)  
 	public ModelAndView processUnauthenticatedException(
 			NativeWebRequest request, UnauthorizedException e) {
-		
-		e.printStackTrace();
-		logger.error(e.getMessage(), e);
+		if (logger.isDebugEnabled()) {
+			e.printStackTrace();
+			logger.error(e.getMessage(), e);
+		}
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("errormsg", "Unauthorized");

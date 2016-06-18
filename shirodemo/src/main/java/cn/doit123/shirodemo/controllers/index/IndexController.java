@@ -1,6 +1,7 @@
 package cn.doit123.shirodemo.controllers.index;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,13 @@ public class IndexController {
 		
 		String username = (String)SecurityUtils.getSubject().getPrincipal();
 		model.addAttribute("username", username);
+		
+		Session session = SecurityUtils.getSubject().getSession();
+		String sid = session.getId().toString();
+		String host = session.getHost();
+		model.addAttribute("sid", sid);
+		model.addAttribute("host", host);
+		
 		return "index";
 	}
 	

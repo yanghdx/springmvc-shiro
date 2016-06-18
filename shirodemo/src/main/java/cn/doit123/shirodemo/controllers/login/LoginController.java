@@ -55,4 +55,10 @@ public class LoginController {
 		return "redirect:/index";
 		
 	}
+	
+	@RequestMapping(value = "/logout", method=RequestMethod.GET)
+	public String logout() {
+		SecurityUtils.getSubject().logout();
+		return "redirect:/login";
+	}
 }
