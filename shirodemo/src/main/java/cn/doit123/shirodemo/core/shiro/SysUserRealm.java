@@ -31,6 +31,7 @@ public class SysUserRealm extends AuthorizingRealm {
 		
 		logger.debug("获取 授权方法---");
 		
+		// 这里应该第一次加载授权后 放入缓存（ehcache或session）
 		final String username = (String)principals.getPrimaryPrincipal();
 		
 		SysUser user = userService.findByUsername(username);
@@ -48,6 +49,7 @@ public class SysUserRealm extends AuthorizingRealm {
 		
 		logger.debug("获取 认证方法---");
 		
+		//基于用户名 密码进行认证
 		final String username = (String)token.getPrincipal();
 		
 		SysUser user = userService.findByUsername(username);
@@ -57,6 +59,7 @@ public class SysUserRealm extends AuthorizingRealm {
 		} else if (user.isLocked()) {
 			throw new LockedAccountException();
 		} else {
+			//交由shiro去验证密码正确性
 			SimpleAuthenticationInfo authInfo = new SimpleAuthenticationInfo(
 					user.getUsername(), 
 					user.getPassword(), 
