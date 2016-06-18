@@ -1,15 +1,12 @@
 /target
 .class
 .project
-/.settings/*
+/.settings
 *.jar
 *.log
 *.classpath
-/output
 /tmp
 *.war
-*.tar.gz
 *.tar
-*.rar
 *.ear
 /bin
