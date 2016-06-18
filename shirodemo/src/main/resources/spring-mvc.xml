@@ -16,7 +16,7 @@
 	<mvc:annotation-driven/> 
 	
     <!-- 开启controller注解支持 -->
-    <context:component-scan base-package="cn.doit123.shirodemo.web.controller" use-default-filters="false">
+    <context:component-scan base-package="cn.doit123.shirodemo" use-default-filters="false">
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation"

@@ -101,6 +101,26 @@
      </listener>  
 
 
+	<servlet-mapping>
+    	<servlet-name>default</servlet-name>
+    	<url-pattern>/images/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+    	<servlet-name>default</servlet-name>
+    	<url-pattern>/js/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+   	 	<servlet-name>default</servlet-name>
+    	<url-pattern>/css/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+   	 	<servlet-name>default</servlet-name>
+    	<url-pattern>/ui/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+   	 	<servlet-name>default</servlet-name>
+    	<url-pattern>/static/*</url-pattern>
+	</servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>/index.html</welcome-file>

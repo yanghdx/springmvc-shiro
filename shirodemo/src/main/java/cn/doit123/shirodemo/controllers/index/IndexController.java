@@ -1,13 +1,12 @@
 package cn.doit123.shirodemo.controllers.index;
 
-import java.util.Set;
-
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import cn.doit123.shirodemo.pojo.entity.SysUser;
 import cn.doit123.shirodemo.services.sysuser.SysUserService;
 
 @Controller
@@ -18,13 +17,16 @@ public class IndexController {
 	
 	//private ResService resService;
 	
-	@RequestMapping(value = "/index")
-	public String index(SysUser user, Model model) {
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index(Model model) {
 		
-		Set<String> menus = userService.findPermissions(user.getId());
-		
-		model.addAttribute("menus", menus);
-		
+		String username = (String)SecurityUtils.getSubject().getPrincipal();
+		model.addAttribute("username", username);
 		return "index";
+	}
+	
+	@RequestMapping(value = "/unauthenticated", method = RequestMethod.GET)
+	public String unauthenticated() {
+		return "unauthenticated";
 	}
 }

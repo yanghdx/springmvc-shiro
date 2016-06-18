@@ -8,7 +8,7 @@ import org.apache.shiro.web.util.WebUtils;
 
 import com.alibaba.druid.util.StringUtils;
 
-public class ServFormAuthFilter extends FormAuthenticationFilter{
+public class ServFormAuthFilter extends FormAuthenticationFilter {
 
 	protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
         String fallbackUrl = (String) getSubject(request, response)

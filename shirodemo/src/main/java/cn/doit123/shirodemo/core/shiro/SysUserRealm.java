@@ -1,5 +1,8 @@
 package cn.doit123.shirodemo.core.shiro;
 
+
+
+import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -11,19 +14,24 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import cn.doit123.shirodemo.pojo.entity.SysUser;
 import cn.doit123.shirodemo.services.sysuser.SysUserService;
 
 public class SysUserRealm extends AuthorizingRealm {
 
-	//@Autowired
+	private static final Logger logger = Logger.getLogger(SysUserRealm.class);
+	
+	@Autowired
 	private SysUserService userService;
 	
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		
-		String username = (String)principals.getPrimaryPrincipal();
+		logger.debug("获取 授权方法---");
+		
+		final String username = (String)principals.getPrimaryPrincipal();
 		
 		SysUser user = userService.findByUsername(username);
 		
@@ -37,6 +45,8 @@ public class SysUserRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken token) throws AuthenticationException {
+		
+		logger.debug("获取 认证方法---");
 		
 		final String username = (String)token.getPrincipal();
 		

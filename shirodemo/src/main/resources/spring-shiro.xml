@@ -100,6 +100,10 @@
 
     <bean id="sysUserFilter" class="cn.doit123.shirodemo.core.shiro.SysUserFilter"/>
 
+	<bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+        <property name="redirectUrl" value="/login" />
+    </bean>
+    
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
@@ -108,18 +112,20 @@
         <property name="unauthorizedUrl" value="/unauthroized"/>
         <property name="filters">
             <util:map>
-                <entry key="authc" value-ref="formAuthenticationFilter"/>
                 <entry key="sysUser" value-ref="sysUserFilter"/>
             </util:map>
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /remoteService = anon
-                /login = authc
+            	/static/** = anon
+            	/js/** = anon
+            	/css/** = anon
+            	/ui/** = anon
+            	/images/** = anon
+                /login = anon 
                 /logout = logout
-                /authenticated = authc
-                /static/** = anon
-                /** = user,sysUser
+                /unauthenticated = anon 
+                /** = authc
             </value>
         </property>
     </bean>
