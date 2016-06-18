@@ -4,9 +4,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import cn.doit123.shirodemo.pojo.entity.SysUser;
 
@@ -18,20 +20,25 @@ public class SysUserDaoImpl implements SysUserDao {
 	
 	@Override
 	public SysUser queryByUsername(String username) {
-		return jdbcTemplate.queryForObject("select * from sys_user where username=?", 
-				new Object[]{username}, new BeanPropertyRowMapper<SysUser>());
+		RowMapper<SysUser> mapper = ParameterizedBeanPropertyRowMapper.newInstance(SysUser.class);
+		List<SysUser> users = jdbcTemplate.query("select * from sys_user where username=?", 
+				new Object[]{username}, mapper);
+		return CollectionUtils.isEmpty(users) ? null : users.get(0);
 		
 	}
 
 	@Override
 	public List<SysUser> queryAll() {
-		return jdbcTemplate.query("select * from sys_user", new BeanPropertyRowMapper<SysUser>());
+		RowMapper<SysUser> mapper = ParameterizedBeanPropertyRowMapper.newInstance(SysUser.class);
+		return jdbcTemplate.query("select * from sys_user", mapper);
 	}
 
 	@Override
 	public SysUser queryById(int id) {
-		return jdbcTemplate.queryForObject("select * from sys_user where id=?", 
-				new Object[]{id}, new BeanPropertyRowMapper<SysUser>());
+		RowMapper<SysUser> mapper = ParameterizedBeanPropertyRowMapper.newInstance(SysUser.class);
+		List<SysUser> users = jdbcTemplate.query("select * from sys_user where id=?", 
+				new Object[]{id}, mapper);
+		return CollectionUtils.isEmpty(users) ? null : users.get(0);
 	}
 
 }

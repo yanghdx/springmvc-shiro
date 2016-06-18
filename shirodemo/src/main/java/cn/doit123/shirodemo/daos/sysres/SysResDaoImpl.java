@@ -7,7 +7,10 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import cn.doit123.shirodemo.pojo.entity.SysRes;
 import cn.doit123.shirodemo.utils.ArrayHelper;
@@ -35,16 +38,20 @@ public class SysResDaoImpl implements SysResDao {
 
 	@Override
 	public SysRes queryById(int roleId) {
-		return jdbcTemplate.queryForObject("select * from sys_res where id=" + roleId, 
-				SysRes.class);
+		RowMapper<SysRes> mapper = ParameterizedBeanPropertyRowMapper.newInstance(SysRes.class);
+		
+		List<SysRes> ress = jdbcTemplate.query("select * from sys_res where id=" + roleId, 
+				mapper);
+		return CollectionUtils.isEmpty(ress) ? null : ress.get(0);
 	}
 
 	@Override
 	public List<SysRes> queryByIds(int[] roleIds) {
 		if (!ArrayUtils.isEmpty(roleIds)) {
 			String ids = ArrayHelper.join(ArrayUtils.toObject(roleIds), ',');
-			return jdbcTemplate.queryForList("select * from sys_res where id in (" + ids + ")", 
-					SysRes.class);
+			RowMapper<SysRes> mapper = ParameterizedBeanPropertyRowMapper.newInstance(SysRes.class);
+			return jdbcTemplate.query("select * from sys_res where id in (" + ids + ")", 
+					mapper);
 		} else {
 			return Collections.<SysRes>emptyList();
 		}
