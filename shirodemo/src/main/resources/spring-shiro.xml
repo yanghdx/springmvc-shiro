@@ -118,10 +118,13 @@
         <property name="filterChainDefinitions">
             <value>
             	/static/** = anon
-            	/js/** = anon
+      			/js/** = anon
             	/css/** = anon
             	/ui/** = anon
             	/images/** = anon
+            	/swagger/** = anon
+            	/api-docs** = anon
+            	/api-docs/** = anon
                 /login = anon 
                 /logout = logout
                 /unauthenticated = anon 

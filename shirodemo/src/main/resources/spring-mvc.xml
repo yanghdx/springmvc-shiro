@@ -1,9 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
        http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -11,84 +10,94 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:property-placeholder location="classpath:db.properties"/>
+	<context:property-placeholder location="classpath:db.properties" />
 
-	<mvc:annotation-driven/> 
-	
-    <!-- 开启controller注解支持 -->
-    <context:component-scan base-package="cn.doit123.shirodemo" use-default-filters="false">
-        <context:include-filter type="annotation"
-                                expression="org.springframework.stereotype.Controller"/>
-        <context:include-filter type="annotation"
-                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
-        <!-- 将Service注解给去掉  -->
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>                       
-    </context:component-scan>
+	<mvc:annotation-driven />
+
+	<!-- 开启controller注解支持 -->
+	<context:component-scan base-package="cn.doit123.shirodemo"
+		use-default-filters="false">
+		<!-- 只有controller相关 -->
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+		<!-- 将Service注解给去掉 -->
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
 
 
-	<bean id="jsonHttpMessageConverter" 
-       class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
- 		<property name="messageConverters">
- 		  	<list>
-  				<ref bean="jsonHttpMessageConverter"/>
-   			</list>
-    	</property>
+	<bean id="jsonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonHttpMessageConverter" />
+			</list>
+		</property>
 	</bean>
 
 	<bean id="freemarkerConfig"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		 <property name="templateLoaderPath" value="/WEB-INF/views/" />
-		 <property name="freemarkerSettings">
-		 	<props>
-		 		<prop key="template_update_delay">0</prop>
-		 		<prop key="default_encoding">UTF-8</prop>
-		 		<prop key="number_format">0.###</prop>
-		 		<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
-		 		<prop key="classic_compatible">true</prop>
-		 		<prop key="template_exception_handler">ignore</prop>
-		 	</props>
-		 </property>
+		<property name="templateLoaderPath" value="/WEB-INF/views/" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="template_update_delay">0</prop>
+				<prop key="default_encoding">UTF-8</prop>
+				<prop key="number_format">0.###</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="classic_compatible">true</prop>
+				<prop key="template_exception_handler">ignore</prop>
+			</props>
+		</property>
 	</bean>
-	
-    <!-- 当在web.xml 中   DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
-    <mvc:default-servlet-handler/>
-
-    <!-- 静态资源映射 -->
-    <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
-
 
 	
-    <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
-    <!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-   		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-        <property name="contentType" value="text/html;charset=UTF-8;"/>
-        <property name="prefix" value="/WEB-INF/jsp/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean> -->
-    
-    <bean id="freemarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-    	<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
-    	<property name="contentType" value="text/html;charset=UTF-8"/>
-    	<!-- <property name="prefix" value="/WEB-INF/views/"/> -->
-    	<property name="suffix" value=".ftl"/>
-    </bean>
-    
-    <bean id="multipartResolver"     
-          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-          <property name="defaultEncoding" value="UTF-8"/>
-          <!-- 20M -->
-          <property name="maxUploadSize" value="20480000"/>
-    </bean>     
+	<!-- swagger -->
+	<bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig" />
+	<bean class="cn.doit123.shirodemo.core.api.WebSwaggerConfig" />
 
-    <!-- 控制器异常处理 -->
-    <bean id="exceptionHandlerExceptionResolver" 
-    	class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
-    </bean>
+	<!-- 当在web.xml 中 DispatcherServlet使用 <url-pattern>/</url-pattern> 映射时，能映射静态资源 -->
+	<mvc:default-servlet-handler />
 
-    <bean class="cn.doit123.shirodemo.core.handlers.AuthExceptionHandler"/>
+	<!-- 静态资源映射 -->
+	<mvc:resources mapping="/static/**" location="/WEB-INF/static/" />
+	<mvc:resources mapping="/swagger/**" location="/WEB-INF/swagger/" />
 
-    <import resource="spring-mvc-shiro.xml"/>
-    <!--  <import resource="spring-mvc-remote-service.xml"/> -->
+
+	<!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
+	<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/> 
+		<property name="contentType" value="text/html;charset=UTF-8;"/> <property 
+		name="prefix" value="/WEB-INF/jsp/"/> <property name="suffix" value=".jsp"/> 
+		</bean> -->
+
+	<bean id="freemarkerViewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<!-- <property name="prefix" value="/WEB-INF/views/"/> -->
+		<property name="suffix" value=".ftl" />
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<!-- 20M -->
+		<property name="maxUploadSize" value="20480000" />
+	</bean>
+
+	<!-- 控制器异常处理 -->
+	<bean id="exceptionHandlerExceptionResolver"
+		class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
+	</bean>
+
+	<bean class="cn.doit123.shirodemo.core.handlers.AuthExceptionHandler" />
+
+	<import resource="spring-mvc-shiro.xml" />
+	<!-- <import resource="spring-mvc-remote-service.xml"/> -->
 
 </beans>
